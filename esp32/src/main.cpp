@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <WiFi.h>
+#include "secrets.h"
 
 #define NUM_SENSORS 5
 DeviceAddress sensorAddresses[NUM_SENSORS] = {
@@ -20,6 +22,15 @@ DallasTemperature sensors(&oneWire);
 void setup() {
   Serial.begin(115200);
   sensors.begin();
+
+  WiFi.begin(SSID, PASSWORD);
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.print("\nConnected! IP Address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
