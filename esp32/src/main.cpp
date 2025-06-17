@@ -39,6 +39,17 @@ void setup() {
   }
   Serial.print("\nConnected! IP Address: ");
   Serial.println(WiFi.localIP());
+
+  configTime(-28800, 3600, "time.google.com");
+  Serial.print("Synchronizing time...");
+  time_t now = time(nullptr);
+  while (now < 100000) {
+    delay(500);
+    Serial.print(".");
+    now = time(nullptr);
+  }
+  Serial.print("\nSynchronized! Time: ");
+  Serial.println(time(nullptr));
 }
 
 void loop() {
@@ -46,7 +57,7 @@ void loop() {
 
   delay(750);
 
-  String json = "{";
+  String json = "{\"timestamp\": " + String((uint64_t) time(nullptr)) + ",";
 
   for (int i = 0; i < NUM_SENSORS; i++) {
     float tempC = sensors.getTempC(sensorAddresses[i]);

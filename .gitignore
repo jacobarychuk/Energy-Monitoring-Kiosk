@@ -6,3 +6,4 @@ esp32/.pio
 esp32/.vscode/*
 !esp32/.vscode/extensions.json
 secrets.h
+.DS_Store

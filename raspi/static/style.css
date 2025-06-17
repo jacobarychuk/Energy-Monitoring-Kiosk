@@ -1,0 +1,77 @@
+html {
+  background-color: rgb(12, 69, 168);
+  background-image: linear-gradient(to bottom right, rgb(14, 83, 21), rgb(47, 180, 32));
+  background-attachment: fixed;
+}
+
+body {
+  min-width: 310px;
+  max-width: 1000px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.banner {
+  display: block;
+  width: 30%;
+  margin: 20px auto;
+  border: 5px solid white;
+  border-radius: 5px;
+}
+
+h1, h2 {
+  font-family: Verdana;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: black;
+  margin-top: 0;
+  padding-top: 25px;
+}
+
+.tabs {
+  max-width: 1000px;
+  margin: 50px auto;
+  display: block;
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tab-labels {
+  display: flex;
+  width: 100%;
+}
+
+.tab-label {
+  flex: 1;
+  padding: 25px;
+  background: #e6a433;
+  font-weight: bold;
+  font-family: Verdana;
+  cursor: pointer;
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+}
+
+.tab-label i {
+  font-size: x-large;
+}
+
+input[type="radio"]:checked + label {
+  background: white;
+}
+
+.tab-panel {
+  display: none;
+  background-color: white;
+}
