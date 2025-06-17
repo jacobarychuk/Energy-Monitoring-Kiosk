@@ -6,6 +6,7 @@
     <title>Hybrid Solar Hot Water Monitoring System</title>
     <link rel="stylesheet" href="/static/style.css">
     <script src="https://kit.fontawesome.com/ca98015c02.js" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
   </head>
   <body>
     <header>
@@ -37,6 +38,7 @@
         <!-- Tab Panels -->
         <section class="tab-panel" id="temperature-panel">
           <h2>Temperature Monitoring</h2>
+          <div id="chart-temperature-history"></div>
         </section>
         <section class="tab-panel" id="energy-panel">
           <h2>Energy Monitoring</h2>
@@ -66,5 +68,6 @@
         updatePanels();
       });
     </script>
+    <script src="/static/temperature.js"></script>
   </body>
 </html>
