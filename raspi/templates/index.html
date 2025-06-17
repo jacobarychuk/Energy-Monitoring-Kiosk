@@ -3,10 +3,68 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Solar Hot Water Monitoring System</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://kit.fontawesome.com/ca98015c02.js" crossorigin="anonymous"></script>
   </head>
   <body>
-      <main>
-        <h1>Temperature Sensors</h1>
-      </main>
+    <header>
+      <a href="https://suncoastsolar.org" target="_blank" rel="noopener noreferrer">
+        <img src="/static/logo.png" alt="SCCSA Logo" class="banner" />
+      </a>
+    </header>
+    <main>
+      <h1>Hybrid Solar Hot Water Monitoring System</h1>
+      <div class="tabs">
+        <!-- Tab Labels -->
+        <div class="tab-labels">
+          <input type="radio" id="temperature-tab" name="tab" checked>
+          <label for="temperature-tab" class="tab-label">
+            <i class="fa-solid fa-thermometer"></i>
+          </label>
+
+          <input type="radio" id="energy-tab" name="tab">
+          <label for="energy-tab" class="tab-label">
+            <i class="fa-solid fa-bolt-lightning"></i>
+          </label>
+
+          <input type="radio" id="flow-tab" name="tab">
+          <label for="flow-tab" class="tab-label">
+            <i class="fa-solid fa-faucet-drip"></i>
+          </label>
+        </div>
+
+        <!-- Tab Panels -->
+        <section class="tab-panel" id="temperature-panel">
+          <h2>Temperature Monitoring</h2>
+        </section>
+        <section class="tab-panel" id="energy-panel">
+          <h2>Energy Monitoring</h2>
+        </section>
+        <section class="tab-panel" id="flow-panel">
+          <h2>Flow Monitoring</h2>
+        </section>
+      </div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabs = document.querySelectorAll('input[name="tab"]');
+        const panels = document.querySelectorAll(".tab-panel");
+
+        function updatePanels() {
+          panels.forEach(panel => panel.style.display = "none");
+          const selectedId = document.querySelector('input[name="tab"]:checked').id;
+          const panelId = selectedId.replace("-tab", "-panel");
+          const panel = document.getElementById(panelId);
+          if (panel) panel.style.display = "block";
+        }
+
+        tabs.forEach(tab => {
+          tab.addEventListener("change", updatePanels);
+        });
+
+        updatePanels();
+      });
+    </script>
   </body>
 </html>
