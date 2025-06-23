@@ -9,9 +9,17 @@ var chartTemperatureHistory = new Highcharts.stockChart({
   time: { useUTC: false },
   title: {
     text: 'Historical Temperatures',
-    style: { fontSize: '1.2em' },
+    style: {
+      fontSize: '1.2rem',
+      fontFamily: 'Verdana',
+    },
   },
-  legend: { enabled: true },
+  legend: {
+    enabled: true,
+    itemStyle: {
+      fontFamily: 'Verdana',
+    },
+  },
   navigator: { enabled: false },
   scrollbar: { enabled: false },
   rangeSelector: {
@@ -23,6 +31,11 @@ var chartTemperatureHistory = new Highcharts.stockChart({
     ],
     selected: 0, // Start with "All" selected by default
     inputEnabled: true, // Allows manual date typing
+    labelStyle: { fontFamily: 'Verdana' },
+    inputStyle: { fontFamily: 'Verdana' },
+    buttonTheme: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   series: [
     {
@@ -66,6 +79,9 @@ var chartTemperatureHistory = new Highcharts.stockChart({
       data: []
     },
   ],
+  tooltip: {
+    style: { fontFamily: 'Verdana' },
+  },
   plotOptions: {
     line: {
       dataLabels: { enabled: false },
@@ -73,12 +89,24 @@ var chartTemperatureHistory = new Highcharts.stockChart({
     },
   },
   xAxis: {
-    title: { text: 'Time' },
+    title: {
+      text: 'Time',
+      style: { fontFamily: 'Verdana' },
+    },
     type: 'datetime',
+    labels: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   yAxis: {
-    title: { text: 'Temperature (Celsius)' },
+    title: {
+      text: 'Temperature (Celsius)',
+      style: { fontFamily: 'Verdana' },
+    },
     opposite: false,
+    labels: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   credits: { enabled: false },
 });
