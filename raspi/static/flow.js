@@ -1,0 +1,78 @@
+// Chart of historical hot water flow rate data
+var chartFlowHistory = new Highcharts.stockChart({
+  chart: {
+    renderTo: 'chart-flow-history',
+    zooming: {
+      mouseWheel: { enabled: false },
+    },
+  },
+  time: { useUTC: false },
+  title: {
+    text: 'Historical Hot Water Flow Rate',
+    style: { fontSize: '1.2em' },
+  },
+  legend: { enabled: true },
+  navigator: { enabled: false },
+  scrollbar: { enabled: false },
+  rangeSelector: {
+    buttons: [
+      { type: 'all', text: 'All' },
+      { type: 'day', count: 1, text: '1d' },
+      { type: 'hour', count: 1, text: '1h' },
+      { type: 'minute', count: 1, text: '1m' },
+    ],
+    selected: 0, // Start with "All" selected by default
+    inputEnabled: true, // Allows manual date typing
+  },
+  series: [
+    {
+      type: "line",
+      showInLegend: false,
+      name: "Hot Water",
+      color: "#d62728",
+      dashStyle: "Solid",
+      data: []
+    },
+  ],
+  plotOptions: {
+    line: {
+      dataLabels: { enabled: false },
+      marker: { enabled: false },
+    },
+  },
+  xAxis: {
+    title: { text: 'Time' },
+    type: 'datetime',
+  },
+  yAxis: {
+    title: { text: 'Flow (L/min)' },
+    opposite: false,
+  },
+  credits: { enabled: false },
+});
+
+const fetchInitialFlowData = () => {
+  const now = Math.floor(Date.now() / 1000); // Unix seconds
+  const start = now - (60 * 60 * 24); // Last 24 hours
+  const end = now;
+
+  fetch(`/flow-range?start=${start}&end=${end}`)
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+
+      // Check if the series has data
+      const hasData = data.flow && data.flow.length > 0;
+      if (!hasData) {
+        return;
+      }
+
+      chartFlowHistory.series[0].setData(data.flow);
+    })
+    .catch(error => {
+      console.error("Error fetching historical data:", error);
+    });
+};
+
+fetchInitialFlowData();

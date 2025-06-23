@@ -21,11 +21,32 @@ const String sensorNames[NUM_SENSORS] = {
   "hot"
 };
 
-// Data wire is connected to GPIO 15
+// Water flow sensor data wire is connected to GPIO 13
+#define WATER_FLOW_SENSOR_DATA 13
+
+volatile unsigned int pulseCount = 0;
+const float K_VALUE = 5.5;
+
+// Temperature sensor data wire is connected to GPIO 15
 #define ONE_WIRE_BUS 15
 
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
+
+void pulseCounter() {
+  pulseCount++;
+}
+
+int getFlowRate() {
+  pulseCount = 0;
+
+  // Count pulses for one second
+  attachInterrupt(WATER_FLOW_SENSOR_DATA, pulseCounter, FALLING);
+  delay(1000);
+  detachInterrupt(WATER_FLOW_SENSOR_DATA);
+
+  return pulseCount / K_VALUE; // Flow rate in L/min
+}
 
 void setup() {
   Serial.begin(115200);
@@ -62,14 +83,10 @@ void loop() {
   for (int i = 0; i < NUM_SENSORS; i++) {
     float tempC = sensors.getTempC(sensorAddresses[i]);
 
-    json += "\"" + sensorNames[i] + "\": " + String(tempC);
-
-    if (i < NUM_SENSORS - 1) {
-      json += ",";
-    }
+    json += "\"" + sensorNames[i] + "\": " + String(tempC) + ",";
   }
 
-  json += "}";
+  json += "\"flow\": " + String(getFlowRate()) + "}";
 
   HTTPClient http;
   http.begin("http://raspberrypi.local:5000/data");

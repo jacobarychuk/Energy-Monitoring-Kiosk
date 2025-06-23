@@ -15,7 +15,7 @@ def receive_data():
     print("Received:", content)
 
     # Extract expected fields
-    expected_fields = ["timestamp", "glycol", "preheat", "ambient", "source", "hot"]
+    expected_fields = ["timestamp", "glycol", "preheat", "ambient", "source", "hot", "flow"]
     if not all(key in content for key in expected_fields):
         return 400
 
@@ -23,15 +23,16 @@ def receive_data():
     with sqlite3.connect("sensor_data.db", isolation_level=None) as con:
         cur = con.cursor() # Used to execute SQL statements and fetch results from SQL queries
         cur.execute("""
-            INSERT INTO samples (timestamp, glycol, preheat, ambient, source, hot)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO samples (timestamp, glycol, preheat, ambient, source, hot, flow)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """, (
             content["timestamp"],
             content["glycol"],
             content["preheat"],
             content["ambient"],
             content["source"],
-            content["hot"]
+            content["hot"],
+            content["flow"]
         ))
 
     return "OK"
@@ -64,5 +65,28 @@ def temperature_range():
         data["ambient"].append([timestamp_ms, row[3]])
         data["source"].append([timestamp_ms, row[4]])
         data["hot"].append([timestamp_ms, row[5]])
+
+    return jsonify(data)
+
+@app.route("/flow-range")
+def flow_range():
+    start = int(request.args.get("start"))
+    end = int(request.args.get("end"))
+
+    data = {
+        "flow": []
+    }
+
+    with sqlite3.connect("sensor_data.db", isolation_level=None) as con:
+        cur = con.cursor()
+        cur.execute("""
+            SELECT * FROM samples
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp
+        """, (start, end))
+
+    for row in cur.fetchall():
+        timestamp_ms = row[0] * 1000 # Convert to milliseconds for compatability with Highcharts
+        data["flow"].append([timestamp_ms, row[6]])
 
     return jsonify(data)

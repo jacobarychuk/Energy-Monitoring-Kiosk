@@ -9,6 +9,7 @@ with sqlite3.connect("sensor_data.db", isolation_level=None) as con:
             preheat REAL NOT NULL,
             ambient REAL NOT NULL,
             source REAL NOT NULL,
-            hot REAL NOT NULL
+            hot REAL NOT NULL,
+            flow REAL NOT NULL
         ) STRICT
     """)
