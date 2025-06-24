@@ -111,9 +111,9 @@ var chartTemperatureHistory = new Highcharts.stockChart({
   credits: { enabled: false },
 });
 
-const fetchInitialData = () => {
+const fetchAllTemperatureData = () => {
   const now = Math.floor(Date.now() / 1000); // Unix seconds
-  const start = now - (60 * 60 * 24); // Last 24 hours
+  const start = 0;
   const end = now;
 
   fetch(`/temperature-range?start=${start}&end=${end}`)
@@ -139,4 +139,13 @@ const fetchInitialData = () => {
     });
 };
 
-fetchInitialData();
+fetchAllTemperatureData();
+
+const chartTemperatureHistoryButtons = chartTemperatureHistory.rangeSelector.buttons;
+chartTemperatureHistoryButtons.forEach((button, i) => {
+  button.element.addEventListener('click', () => {
+    if (i === 0) { // "All" is selected
+      fetchAllTemperatureData();
+    }
+  });
+});

@@ -74,9 +74,9 @@ var chartFlowHistory = new Highcharts.stockChart({
   credits: { enabled: false },
 });
 
-const fetchInitialFlowData = () => {
+const fetchAllFlowData = () => {
   const now = Math.floor(Date.now() / 1000); // Unix seconds
-  const start = now - (60 * 60 * 24); // Last 24 hours
+  const start = 0;
   const end = now;
 
   fetch(`/flow-range?start=${start}&end=${end}`)
@@ -98,4 +98,13 @@ const fetchInitialFlowData = () => {
     });
 };
 
-fetchInitialFlowData();
+fetchAllFlowData();
+
+const chartFlowHistoryButtons = chartFlowHistory.rangeSelector.buttons;
+chartFlowHistoryButtons.forEach((button, i) => {
+  button.element.addEventListener('click', () => {
+    if (i === 0) { // "All" is selected
+      fetchAllFlowData();
+    }
+  });
+});
