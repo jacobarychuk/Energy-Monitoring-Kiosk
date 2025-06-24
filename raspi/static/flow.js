@@ -9,7 +9,10 @@ var chartFlowHistory = new Highcharts.stockChart({
   time: { useUTC: false },
   title: {
     text: 'Historical Hot Water Flow Rate',
-    style: { fontSize: '1.2em' },
+    style: {
+      fontSize: '1.2rem',
+      fontFamily: 'Verdana',
+    },
   },
   legend: { enabled: true },
   navigator: { enabled: false },
@@ -23,6 +26,11 @@ var chartFlowHistory = new Highcharts.stockChart({
     ],
     selected: 0, // Start with "All" selected by default
     inputEnabled: true, // Allows manual date typing
+    labelStyle: { fontFamily: 'Verdana' },
+    inputStyle: { fontFamily: 'Verdana' },
+    buttonTheme: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   series: [
     {
@@ -34,6 +42,9 @@ var chartFlowHistory = new Highcharts.stockChart({
       data: []
     },
   ],
+  tooltip: {
+    style: { fontFamily: 'Verdana' },
+  },
   plotOptions: {
     line: {
       dataLabels: { enabled: false },
@@ -41,19 +52,31 @@ var chartFlowHistory = new Highcharts.stockChart({
     },
   },
   xAxis: {
-    title: { text: 'Time' },
+    title: {
+      text: 'Time',
+      style: { fontFamily: 'Verdana' },
+    },
     type: 'datetime',
+    labels: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   yAxis: {
-    title: { text: 'Flow (L/min)' },
+    title: {
+      text: 'Flow (L/min)',
+      style: { fontFamily: 'Verdana' },
+    },
     opposite: false,
+    labels: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   credits: { enabled: false },
 });
 
-const fetchInitialFlowData = () => {
+const fetchAllFlowData = () => {
   const now = Math.floor(Date.now() / 1000); // Unix seconds
-  const start = now - (60 * 60 * 24); // Last 24 hours
+  const start = 0;
   const end = now;
 
   fetch(`/flow-range?start=${start}&end=${end}`)
@@ -75,4 +98,34 @@ const fetchInitialFlowData = () => {
     });
 };
 
-fetchInitialFlowData();
+fetchAllFlowData();
+
+const chartFlowHistoryButtons = chartFlowHistory.rangeSelector.buttons;
+chartFlowHistoryButtons.forEach((button, i) => {
+  button.element.addEventListener('click', () => {
+    if (i === 0) { // "All" is selected
+      fetchAllFlowData();
+    }
+  });
+});
+
+const fetchLiveFlowData = () => {
+  fetch('/latest')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+
+      // Check if a sample has been received yet
+      if (data.error) {
+        return;
+      }
+
+      document.getElementById("live-flow").textContent = data.flow.toFixed(2);
+    })
+    .catch(error => {
+      console.error("Error fetching latest sample:", error);
+    });
+};
+
+setInterval(fetchLiveFlowData, 10000);

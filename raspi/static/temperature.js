@@ -9,9 +9,17 @@ var chartTemperatureHistory = new Highcharts.stockChart({
   time: { useUTC: false },
   title: {
     text: 'Historical Temperatures',
-    style: { fontSize: '1.2em' },
+    style: {
+      fontSize: '1.2rem',
+      fontFamily: 'Verdana',
+    },
   },
-  legend: { enabled: true },
+  legend: {
+    enabled: true,
+    itemStyle: {
+      fontFamily: 'Verdana',
+    },
+  },
   navigator: { enabled: false },
   scrollbar: { enabled: false },
   rangeSelector: {
@@ -23,6 +31,11 @@ var chartTemperatureHistory = new Highcharts.stockChart({
     ],
     selected: 0, // Start with "All" selected by default
     inputEnabled: true, // Allows manual date typing
+    labelStyle: { fontFamily: 'Verdana' },
+    inputStyle: { fontFamily: 'Verdana' },
+    buttonTheme: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   series: [
     {
@@ -66,6 +79,9 @@ var chartTemperatureHistory = new Highcharts.stockChart({
       data: []
     },
   ],
+  tooltip: {
+    style: { fontFamily: 'Verdana' },
+  },
   plotOptions: {
     line: {
       dataLabels: { enabled: false },
@@ -73,19 +89,31 @@ var chartTemperatureHistory = new Highcharts.stockChart({
     },
   },
   xAxis: {
-    title: { text: 'Time' },
+    title: {
+      text: 'Time',
+      style: { fontFamily: 'Verdana' },
+    },
     type: 'datetime',
+    labels: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   yAxis: {
-    title: { text: 'Temperature (Celsius)' },
+    title: {
+      text: 'Temperature (Celsius)',
+      style: { fontFamily: 'Verdana' },
+    },
     opposite: false,
+    labels: {
+      style: { fontFamily: 'Verdana' },
+    },
   },
   credits: { enabled: false },
 });
 
-const fetchInitialData = () => {
+const fetchAllTemperatureData = () => {
   const now = Math.floor(Date.now() / 1000); // Unix seconds
-  const start = now - (60 * 60 * 24); // Last 24 hours
+  const start = 0;
   const end = now;
 
   fetch(`/temperature-range?start=${start}&end=${end}`)
@@ -111,4 +139,38 @@ const fetchInitialData = () => {
     });
 };
 
-fetchInitialData();
+fetchAllTemperatureData();
+
+const chartTemperatureHistoryButtons = chartTemperatureHistory.rangeSelector.buttons;
+chartTemperatureHistoryButtons.forEach((button, i) => {
+  button.element.addEventListener('click', () => {
+    if (i === 0) { // "All" is selected
+      fetchAllTemperatureData();
+    }
+  });
+});
+
+const fetchLiveTemperatureData = () => {
+  fetch('/latest')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+
+      // Check if a sample has been received yet
+      if (data.error) {
+        return;
+      }
+
+      document.getElementById("live-glycol").textContent = data.glycol.toFixed(2);
+      document.getElementById("live-preheat").textContent = data.preheat.toFixed(2);
+      document.getElementById("live-ambient").textContent = data.ambient.toFixed(2);
+      document.getElementById("live-source").textContent = data.source.toFixed(2);
+      document.getElementById("live-hot").textContent = data.hot.toFixed(2);
+    })
+    .catch(error => {
+      console.error("Error fetching latest sample:", error);
+    });
+};
+
+setInterval(fetchLiveTemperatureData, 10000);
