@@ -23,14 +23,14 @@
             Temperatures
           </label>
 
-          <input type="radio" id="energy-tab" name="tab">
-          <label for="energy-tab" class="tab-label">
-            Power
-          </label>
-
           <input type="radio" id="flow-tab" name="tab">
           <label for="flow-tab" class="tab-label">
             Flows
+          </label>
+
+          <input type="radio" id="energy-tab" name="tab">
+          <label for="energy-tab" class="tab-label">
+            Power
           </label>
         </div>
 
@@ -52,9 +52,7 @@
           </div>
           <div id="chart-temperature-history"></div>
         </section>
-        <section class="tab-panel" id="energy-panel">
-          <h2>Energy Monitoring</h2>
-        </section>
+
         <section class="tab-panel" id="flow-panel">
           <h2>Flow Monitoring</h2>
           <div style="text-align: center;">
@@ -67,6 +65,10 @@
             <span>Hot Water Flow Rate: <span id="live-flow">--</span> L/min</span>
           </div>
           <div id="chart-flow-history"></div>
+        </section>
+
+        <section class="tab-panel" id="energy-panel">
+          <h2>Power Monitoring</h2>
         </section>
       </div>
     </main>
