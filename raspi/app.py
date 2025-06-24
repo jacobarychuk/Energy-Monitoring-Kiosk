@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, abort
 import sqlite3
+
+latest_sample = {}
 
 app = Flask(__name__)
 
@@ -11,8 +13,11 @@ def index():
 # ESP32 sends data here
 @app.route("/data", methods=["POST"])
 def receive_data():
+    global latest_sample
+
     content = request.get_json()
     print("Received:", content)
+    latest_sample = content
 
     # Extract expected fields
     expected_fields = ["timestamp", "glycol", "preheat", "ambient", "source", "hot", "flow"]
@@ -36,6 +41,14 @@ def receive_data():
         ))
 
     return "OK"
+
+@app.route("/latest")
+def latest():
+    global latest_sample
+    if latest_sample:
+        return jsonify(latest_sample)
+    else:
+        abort(404)
 
 @app.route("/temperature-range")
 def temperature_range():

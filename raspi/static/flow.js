@@ -108,3 +108,24 @@ chartFlowHistoryButtons.forEach((button, i) => {
     }
   });
 });
+
+const fetchLiveFlowData = () => {
+  fetch('/latest')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+
+      // Check if a sample has been received yet
+      if (data.error) {
+        return;
+      }
+
+      document.getElementById("live-flow").textContent = data.flow.toFixed(2);
+    })
+    .catch(error => {
+      console.error("Error fetching latest sample:", error);
+    });
+};
+
+setInterval(fetchLiveFlowData, 10000);

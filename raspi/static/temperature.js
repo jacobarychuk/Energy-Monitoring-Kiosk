@@ -149,3 +149,28 @@ chartTemperatureHistoryButtons.forEach((button, i) => {
     }
   });
 });
+
+const fetchLiveTemperatureData = () => {
+  fetch('/latest')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+
+      // Check if a sample has been received yet
+      if (data.error) {
+        return;
+      }
+
+      document.getElementById("live-glycol").textContent = data.glycol.toFixed(2);
+      document.getElementById("live-preheat").textContent = data.preheat.toFixed(2);
+      document.getElementById("live-ambient").textContent = data.ambient.toFixed(2);
+      document.getElementById("live-source").textContent = data.source.toFixed(2);
+      document.getElementById("live-hot").textContent = data.hot.toFixed(2);
+    })
+    .catch(error => {
+      console.error("Error fetching latest sample:", error);
+    });
+};
+
+setInterval(fetchLiveTemperatureData, 10000);
