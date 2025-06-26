@@ -18,6 +18,11 @@
       <div class="tabs">
         <!-- Tab Labels -->
         <div class="tab-labels">
+          <input type="radio" id="process-tab" name="tab" checked>
+          <label for="process-tab" class="tab-label">
+            Process
+          </label>
+
           <input type="radio" id="temperature-tab" name="tab" checked>
           <label for="temperature-tab" class="tab-label">
             Temperatures
@@ -35,6 +40,9 @@
         </div>
 
         <!-- Tab Panels -->
+        <section class="tab-panel" id="process-panel">
+        </section>
+
         <section class="tab-panel" id="temperature-panel">
           <h2>Temperature Monitoring</h2>
           <div style="text-align: center;">
