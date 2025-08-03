@@ -121,7 +121,11 @@ const fetchLiveFlowData = () => {
         return;
       }
 
+      // Live section of flow tab
       document.getElementById("live-flow").textContent = data.flow.toFixed(2);
+
+      // Process tab
+      document.getElementById("hot-flow-value").textContent = data.flow.toFixed(2);
     })
     .catch(error => {
       console.error("Error fetching latest sample:", error);

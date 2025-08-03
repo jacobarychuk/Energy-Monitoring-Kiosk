@@ -162,11 +162,19 @@ const fetchLiveTemperatureData = () => {
         return;
       }
 
+      // Live section of temperature tab
       document.getElementById("live-glycol").textContent = data.glycol.toFixed(2);
       document.getElementById("live-preheat").textContent = data.preheat.toFixed(2);
       document.getElementById("live-ambient").textContent = data.ambient.toFixed(2);
       document.getElementById("live-source").textContent = data.source.toFixed(2);
       document.getElementById("live-hot").textContent = data.hot.toFixed(2);
+
+      // Process tab
+      document.getElementById("glycol-temperature-value").textContent = data.glycol.toFixed(2);
+      document.getElementById("preheat-temperature-value").textContent = data.preheat.toFixed(2);
+      document.getElementById("ambient-temperature-value").textContent = data.ambient.toFixed(2);
+      document.getElementById("source-temperature-value").textContent = data.source.toFixed(2);
+      document.getElementById("hot-temperature-value").textContent = data.hot.toFixed(2);
     })
     .catch(error => {
       console.error("Error fetching latest sample:", error);
