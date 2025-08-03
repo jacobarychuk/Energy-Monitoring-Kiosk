@@ -2,6 +2,7 @@ html {
   background-color: rgb(12, 69, 168);
   background-image: linear-gradient(to bottom right, rgb(14, 83, 21), rgb(47, 180, 32));
   background-attachment: fixed;
+  overflow-y: scroll;
 }
 
 body {
@@ -87,6 +88,7 @@ input[type="radio"]:checked + label {
   font-family: Verdana;
   font-weight: bold;
 }
+
 .live-badge .dot {
   width: 8px;
   height: 8px;
@@ -95,10 +97,12 @@ input[type="radio"]:checked + label {
   margin-right: 4px;
   animation: pulse 1.5s infinite ease-in-out;
 }
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
 .live-data {
   display: flex;
   justify-content: center;
@@ -108,6 +112,18 @@ input[type="radio"]:checked + label {
   font-family: Verdana;
   margin: 25px 50px;
 }
+
 .live-data span {
   display: inline-block;
+}
+
+.process-diagram {
+  display: flex;
+  justify-content: center;
+  padding: 15px 15px;
+}
+
+.process-diagram svg {
+  width: 100%;
+  height: auto;
 }
