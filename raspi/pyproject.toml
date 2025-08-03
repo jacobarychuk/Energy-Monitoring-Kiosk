@@ -3,6 +3,7 @@ name = "pv-kiosk"
 version = "1.0.0"
 dependencies = [
   "flask",
+  "gunicorn",
 ]
 [tool.setuptools]
 py-modules = ["app"]

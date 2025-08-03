@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify, abort
-import sqlite3
+import os, sqlite3
 
 latest_sample = {}
 
 app = Flask(__name__)
+
+API_KEY = os.getenv("API_KEY")
 
 # Web interface
 @app.route("/")
@@ -14,6 +16,8 @@ def index():
 @app.route("/data", methods=["POST"])
 def receive_data():
     global latest_sample
+    if request.headers.get("API-Key") != API_KEY:
+        abort(401) # Unauthorized
 
     content = request.get_json()
     print("Received:", content)
