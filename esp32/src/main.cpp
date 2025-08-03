@@ -91,6 +91,7 @@ void loop() {
   HTTPClient http;
   http.begin("http://raspberrypi.local:5000/data");
   http.addHeader("Content-Type", "application/json");
+  http.addHeader("API-Key", API_KEY);
   http.POST(json);
   http.end();
 
