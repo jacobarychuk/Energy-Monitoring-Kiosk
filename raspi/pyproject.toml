@@ -4,3 +4,5 @@ version = "1.0.0"
 dependencies = [
   "flask",
 ]
+[tool.setuptools]
+py-modules = ["app"]
