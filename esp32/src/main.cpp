@@ -5,6 +5,8 @@
 #include <HTTPClient.h>
 #include "secrets.h"
 
+const String URL = "https://spca.sccsa-projects.org";
+
 #define NUM_SENSORS 5
 DeviceAddress sensorAddresses[NUM_SENSORS] = {
   { 0x28, 0xD1, 0xE2, 0x52, 0x00, 0x00, 0x00, 0x6B }, // Glycol
@@ -89,7 +91,7 @@ void loop() {
   json += "\"flow\": " + String(getFlowRate()) + "}";
 
   HTTPClient http;
-  http.begin("http://raspberrypi.local:5000/data");
+  http.begin(URL + "/data");
   http.addHeader("Content-Type", "application/json");
   http.addHeader("API-Key", API_KEY);
   http.POST(json);
